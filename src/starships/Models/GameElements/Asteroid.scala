@@ -10,7 +10,6 @@ case class Asteroid(override val pos: Vector2, override val speed: Float,
                     override val targetPosition: Vector2, override val velocity: Vector2, override val lives: Int)
   extends MovingObject[Asteroid](pos, speed, targetPosition, velocity, lives) {
 
-
   override lazy val diameter: Float = asteroidCircum * scale
 
   asteroidsToBeDrawn = asteroidsToBeDrawn :+ this

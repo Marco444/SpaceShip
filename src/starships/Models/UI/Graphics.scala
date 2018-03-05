@@ -18,11 +18,11 @@ class Graphics extends PApplet {
     if (isGaming) gamingScreen()
     else restartGame()
   }
+
   def gamingScreen(): Unit = {
     clear()
     background(230)
     Game.deltaT = 1 / frameRate
-
 
     Game.spaceShip.work(this, imageManager)
     BulletEngine.drawBullets(this, imageManager)
