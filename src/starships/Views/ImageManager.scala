@@ -1,4 +1,4 @@
-package starships
+package src.starships.Views
 
 import processing.core.PImage
 

@@ -2,7 +2,7 @@ package src.starships.Models.GameElements
 
 import processing.core.PApplet
 import src.starships.Models.Others.Game.{deltaT, x, y}
-import src.starships.Models.UI.ImageManager
+import src.starships.Views.ImageManager
 import src.starships.Models.Others.accessoryFunctions.Vector2
 
 abstract class MovingObject[T <: MovingObject[T]](val pos: Vector2, val speed: Float, val targetPosition: Vector2, val velocity: Vector2, val lives: Int) {

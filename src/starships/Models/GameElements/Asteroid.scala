@@ -2,7 +2,7 @@ package src.starships.Models.GameElements
 
 import processing.core.PApplet
 import src.starships.Models.Others.Game.{asteroidCircum, scale}
-import src.starships.Models.UI.ImageManager
+import src.starships.Views.ImageManager
 import src.starships.Models.Others.accessoryFunctions.Vector2
 import src.starships.Models.Engines.CollisionEngine.asteroidsToBeDrawn
 

@@ -3,7 +3,7 @@ package src.starships.Models.Engines
 import processing.core.PApplet
 import src.starships.Models.Others.Game.spaceShip
 import src.starships.Models.GameElements.Asteroid
-import src.starships.Models.UI.ImageManager
+import src.starships.Views.ImageManager
 import src.starships.Models.Others.accessoryFunctions.{Vector2, random}
 import src.starships.Models.Engines.CollisionEngine.asteroidsToBeDrawn
 import src.starships.Models.Others.Game

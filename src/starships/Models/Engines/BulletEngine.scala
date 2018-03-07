@@ -4,7 +4,7 @@ import processing.core.PApplet
 import src.starships.Models.Engines.CollisionEngine.bulletsToBeDrawn
 import src.starships.Models.GameElements.Bullets
 import src.starships.Models.Others.accessoryFunctions.Vector2
-import src.starships.Models.UI.ImageManager
+import src.starships.Views.ImageManager
 import src.starships.Models.Others.Game
 
 

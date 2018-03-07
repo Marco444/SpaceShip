@@ -2,7 +2,7 @@ package src.starships.Models.GameElements
 
 import processing.core.PApplet
 import src.starships.Models.Others.Game.{deltaT, scale, x, y}
-import src.starships.Models.UI.ImageManager
+import src.starships.Views.ImageManager
 import src.starships.Models.Others.Game
 import src.starships.Models.Others.accessoryFunctions._
 

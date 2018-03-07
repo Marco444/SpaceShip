@@ -4,7 +4,7 @@ import src.starships.Models.Engines.{AsteroidEngine, BulletEngine}
 import src.starships.Models.Others.Game
 import src.starships.Models.Others.accessoryFunctions.Vector2
 import src.starships.Models.Engines.CollisionEngine.targetPos
-import src.starships.Models.UI.Graphics
+import src.starships.Views.Graphics
 
 class UI extends Graphics {
 

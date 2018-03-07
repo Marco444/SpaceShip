@@ -4,7 +4,7 @@ import processing.core.PApplet
 import src.starships.Models.Others.Game.spaceShip
 import src.starships.Models.GameElements.{Asteroid, Bullets}
 import src.starships.Models.Others.accessoryFunctions.{Vector2, dist}
-import src.starships.Models.UI.ImageManager
+import src.starships.Views.ImageManager
 
 object CollisionEngine {
 
