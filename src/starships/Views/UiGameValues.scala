@@ -37,11 +37,4 @@ case class UiGameValues(graphics: PApplet) {
       highestScore = score
     }
   }
-
-  def showLives_HighScore_Score(graphics: PApplet): Unit = {
-
-    showScore(graphics)
-    showLives(graphics)
-    showHighestScore(graphics)
-  }
 }
