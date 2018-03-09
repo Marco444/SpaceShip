@@ -38,7 +38,7 @@ class Graphics extends PApplet {
     CollisionEngine.eliminateSpaceShip(this, imageManager)
 
     ///Show stuff for the game.
-    UiGameValues(this).showHighestScore(this)
+    UiGameValues(this).showHighestScore(this) ///Am I instatiating the class UiGameValues, every time I call it, or I am not ?
     UiGameValues(this).showLives(this)
     UiGameValues(this).showScore(this)
   }
