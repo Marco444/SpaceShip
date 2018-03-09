@@ -13,16 +13,10 @@ object AsteroidEngine {
 
   def createNewAsteroid(): Unit = {
     lazy val asteroidPos = randomAsteroidPos() //Create a random position for an Asteroid
-    lazy val asteroidTargetPos: Vector2 = spaceShip.pos - asteroidPos //Define the target position of the Asteroid.
-    Asteroid(asteroidPos, Game.asteroidSpeed, spaceShip.pos, asteroidTargetPos, 1) //Finally create the new Asteroid
+    Asteroid(asteroidPos, Game.asteroidSpeed, spaceShip.pos, asteroidTargetPos(asteroidPos), 1) //Finally create the new Asteroid
   }
 
-  def createAsteroids(asteroidNumber: Int): Unit = {
-    if (asteroidNumber > 0) {
-      createNewAsteroid()
-      createAsteroids(asteroidNumber - 1)
-    }
-  }
+  def asteroidTargetPos(asteroidPos: Vector2): Vector2 = spaceShip.pos - asteroidPos
 
   def drawAsteroids(graphics: PApplet, imageManager: ImageManager): Unit = asteroidsToBeDrawn.foreach {
     asteroid =>
@@ -30,19 +24,16 @@ object AsteroidEngine {
       asteroid.delList()
   }
 
-  def randomAsteroidPos(): Vector2 = {
-    lazy val rand: Int = random(0, 3)
-    if (rand == 0) Vector2(random(0, Game.x), Game.asteroidCircum)
-
-    /** A random position in upper limit **/
-    if (rand == 1) Vector2(Game.asteroidCircum, random(0, Game.y))
-
-    /** A random position in left-most limit **/
-    if (rand == 2) Vector2(Game.x - Game.asteroidCircum, random(0, Game.y))
-
-    /** A random position in right-most limit **/
-    else Vector2(random(0, Game.x), Game.y - Game.asteroidCircum)
-
-    /** A random position in lower limit **/
+  def randomAsteroidPos(): Vector2 = random(0, 3) match {
+    case 0 =>  upperLimitPos
+    case 1 =>  leftMostLimitPos
+    case 2 => lowerLimitPos
+    case _ => rightMostLimitPos
   }
+
+  def upperLimitPos: Vector2 = Vector2(random(0, Game.x), Game.asteroidCircum)
+  def leftMostLimitPos: Vector2 = Vector2(Game.asteroidCircum, random(0, Game.y))
+  def lowerLimitPos: Vector2 = Vector2(Game.x - Game.asteroidCircum, random(0, Game.y))
+  def rightMostLimitPos: Vector2 = Vector2(random(0, Game.x), Game.y - Game.asteroidCircum)
+
 }

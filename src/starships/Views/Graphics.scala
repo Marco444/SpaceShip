@@ -1,7 +1,7 @@
 package src.starships.Views
 
 import processing.core.PApplet
-import src.starships.Models.Engines.CollisionEngine.{asteroidsToBeDrawn, bulletsToBeDrawn}
+import src.starships.Models.Engines.CollisionEngine.{asteroidsToBeDrawn, bulletsToBeDrawn, eliminateCollidingProyectilles, eliminateSpaceShip}
 import src.starships.Models.Engines.{AsteroidEngine, BulletEngine, CollisionEngine}
 import src.starships.Models.Others.Game
 import src.starships.Models.Others.accessoryFunctions.Vector2
@@ -24,18 +24,28 @@ class Graphics extends PApplet {
     background(230)
     Game.deltaT = 1 / frameRate
 
-    Game.spaceShip.work(this, imageManager)
+    ///SpaceShip.
+    Game.spaceShip.maintainWithinScreen()
+    Game.spaceShip.draw(this, imageManager)
+
+    //Make asteroid and bullets show
     BulletEngine.drawBullets(this, imageManager)
     AsteroidEngine.drawAsteroids(this, imageManager)
-    CollisionEngine.work(this, imageManager)
     asteroidsPop(this)
 
-    UiGameValues.work(this)
+    //Make colliding objects collide.
+    CollisionEngine.eliminateCollidingProyectilles(this, imageManager)
+    CollisionEngine.eliminateSpaceShip(this, imageManager)
+
+    ///Show stuff for the game.
+    UiGameValues(this).showHighestScore(this)
+    UiGameValues(this).showLives(this)
+    UiGameValues(this).showScore(this)
   }
 
   def asteroidsPop(graphics: Graphics): Unit = {
     if (millis() - Game.lastAsteroidTime > 2000) {
-      AsteroidEngine.createAsteroids(2) //Though it's better to reduce the time asteroidPops, more acuratte asteroids.
+      AsteroidEngine.createNewAsteroid()
       Game.lastAsteroidTime = millis()
     }
   }
@@ -48,7 +58,7 @@ class Graphics extends PApplet {
     Game.spaceShip = Game.spaceShip.update(Vector2(Game.x / 2, Game.y / 2), Game.bulletSpeed, Vector2(0, 0), Vector2(0, 0), 10) //Make spaceShip pop in original position
     asteroidsToBeDrawn = Vector()
     bulletsToBeDrawn = Vector()
-    UiGameValues.findHighestScore()
+    UiGameValues(this).findHighestScore()
     Game.startTime = millis() // Restart the time, along with the game
   }
 

@@ -8,49 +8,41 @@ import src.starships.Views.ImageManager
 
 object CollisionEngine {
 
-  /** This is to generate Bullets **/
   var targetPos: Vector[Vector2] = Vector()
   var bulletsToBeDrawn: Vector[Bullets] = Vector()
-  /** This is to make the Asteroids Pop **/
-
   var asteroidsToBeDrawn: Vector[Asteroid] = Vector()
 
-  /** If it is a Set() there should not be bullets repeated ? with the same position ? in other words, colliding bullets ! **/
-
   def work(graphics: PApplet, imageManager: ImageManager): Unit = {
-    proyectillesColliding()
-    spaceShipCollisions()
     eliminateCollidingProyectilles(graphics, imageManager)
     eliminateSpaceShip(graphics, imageManager)
   }
 
-  def proyectillesColliding(): Vector[(Asteroid, Bullets)] = {
+  def proyectillesColliding: Vector[(Asteroid, Bullets)] = {
     for {
       bullets <- bulletsToBeDrawn
       asteroids <- asteroidsToBeDrawn
       if dist(bullets.pos.x, bullets.pos.y, asteroids.pos.x, asteroids.pos.y) < bullets.radius + asteroids.radius
-    } yield (asteroids, bullets) //The problem appears to be in the unreliability in checking for difference in ellipses
+    } yield (asteroids, bullets)
   }
 
-  def spaceShipCollisions(): Vector[(Boolean, Asteroid)] = asteroidsToBeDrawn.map {
+  def spaceShipCollisions: Vector[(Boolean, Asteroid)] = asteroidsToBeDrawn.map {
     asteroids =>
-      (dist(spaceShip.pos.x, spaceShip.pos.y, asteroids.pos.x, asteroids.pos.y) < spaceShip.radius + asteroids.radius,
-        asteroids)
+      ( dist(spaceShip.pos.x, spaceShip.pos.y, asteroids.pos.x, asteroids.pos.y) < spaceShip.radius + asteroids.radius,
+        asteroids) // Yields true iff the distance between the spaceShip and the asteroid is smaller than the sum of their radii.
   }
 
-  def eliminateCollidingProyectilles(graphics: PApplet, imageManager: ImageManager): Unit = proyectillesColliding() match {
-    case Vector() =>
-    case xs => xs.foreach {
-      pair =>
-        pair._1.explode(graphics, imageManager)
-        pair._2.explode(graphics, imageManager)
-    }
+  def eliminateCollidingProyectilles(graphics: PApplet, imageManager: ImageManager): Unit =
+    proyectillesColliding.foreach(pair => collisionBetween(pair, graphics, imageManager))
+
+  def collisionBetween(tuple: (Asteroid, Bullets), graphics: PApplet, imageManager: ImageManager): Unit = {
+    tuple._1.explode(graphics, imageManager)
+    tuple._2.explode(graphics, imageManager)
   }
 
-  def eliminateSpaceShip(graphics: PApplet, imageManager: ImageManager): Unit = spaceShipCollisions().foreach {
+  def eliminateSpaceShip(graphics: PApplet, imageManager: ImageManager): Unit = spaceShipCollisions.foreach{
     pair =>
       if (pair._1) {
-        spaceShip = spaceShip.collision()
+        spaceShip.collision()
         pair._2.explode(graphics, imageManager)
       }
   }

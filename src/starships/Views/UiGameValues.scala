@@ -6,9 +6,12 @@ import src.starships.Models.Others.Game
 import src.starships.Models.Others.Game.{startTime, x, y}
 
 
-object UiGameValues {
+case class UiGameValues(graphics: PApplet) {
   var score: Int = 0
   var highestScore: Int = 0
+  val timesNewRoman: PFont = graphics.createFont("TimesNewRoman", 16, true)
+  graphics.textFont(timesNewRoman, 13)
+  graphics.fill(0)
 
   def showLives(applet: PApplet): Unit = {
     applet.text("Lives: ", 5, x - 16)
@@ -35,10 +38,7 @@ object UiGameValues {
     }
   }
 
-  def work(graphics: PApplet): Unit = {
-    val timesNewRoman: PFont = graphics.createFont("TimesNewRoman", 16, true)
-    graphics.textFont(timesNewRoman, 13)
-    graphics.fill(0)
+  def showLives_HighScore_Score(graphics: PApplet): Unit = {
 
     showScore(graphics)
     showLives(graphics)

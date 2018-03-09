@@ -12,61 +12,42 @@ case class SpaceShip(override val pos: Vector2, override val speed: Float,
 
   override lazy val diameter: Float = 60f * scale
 
-  def moveLeftBy(distance: Int): SpaceShip =
-    SpaceShip(Vector2(this.pos.x - distance, this.pos.y), this.speed, Vector2(0, 0), this.velocity, this.lives)
+  def moveLeftBy(distance: Float): SpaceShip = SpaceShip(Vector2(pos.x - distance, pos.y), speed, Vector2(0, 0), velocity, lives)
 
-  def moveRightBy(distance: Int): SpaceShip =
-    SpaceShip(Vector2(this.pos.x + distance, this.pos.y), this.speed, Vector2(0, 0), this.velocity, this.lives)
+  def moveRightBy(distance: Float): SpaceShip = SpaceShip(Vector2(pos.x + distance, pos.y), speed, Vector2(0, 0), velocity, lives)
 
-  def moveDownBy(distance: Int): SpaceShip =
-    SpaceShip(Vector2(this.pos.x, this.pos.y - distance), this.speed, Vector2(0, 0), this.velocity, this.lives)
+  def moveDownBy(distance: Float): SpaceShip = SpaceShip(Vector2(pos.x, pos.y - distance), speed, Vector2(0, 0), velocity, lives)
 
-  def moveUpBy(distance: Int): SpaceShip =
-    SpaceShip(Vector2(this.pos.x, this.pos.y + distance), this.speed, Vector2(0, 0), this.velocity, this.lives)
+  def moveUpBy(distance: Float): SpaceShip = SpaceShip(Vector2(pos.x, pos.y + distance), speed, Vector2(0, 0), velocity, lives)
+
+  override def explode(graphics: PApplet, imageManager: ImageManager): Unit = graphics.image(imageManager("img/explosion.png"), pos.x - radius, pos.y - radius, diameter, diameter)
+
+  override def update(newPos: Vector2, speed: Float, targetPosition: Vector2, velocity: Vector2, lives: Int): SpaceShip = SpaceShip(newPos, speed, targetPosition, velocity, lives)
+
+  protected def newSpaceShip(targetPosition: Vector2): Unit = Game.spaceShip = this.updatePosition(targetPosition)
+
+  protected def updatePosition(targetPosition: Vector2): SpaceShip = this.update(this.newPos(spaceShipVelocity(targetPosition)), speed, targetPosition, velocity, this.lives)
+
+  protected def spaceShipVelocity(targetPosition: Vector2): Vector2 = targetPosition - this.pos
+
+  protected def newPos(spaceShipVelocity: Vector2): Vector2 = this.pos + this.spaceShipVelocity(targetPosition) * speed * deltaT
+
+  def isAlive: Boolean = lives > 0
+
+  def collision(): Unit = Game.spaceShip = this.update(this.pos, this.speed, this.targetPosition, this.velocity, this.lives - 1)
+
+  def moveTo(targetPosition: Vector2, graphics: PApplet, imageManager: ImageManager): Unit = if (this.withinScreen()) newSpaceShip(targetPosition)
+
 
   def draw(graphics: PApplet, imageManager: ImageManager): Unit =
     if (this.isAlive) graphics.image(imageManager("img/spaceShip.png"), pos.x - radius, pos.y - radius, diameter, diameter)
     else explode(graphics, imageManager)
 
-  override def explode(graphics: PApplet, imageManager: ImageManager): Unit = {
-    graphics.image(imageManager("img/explosion.png"), pos.x - radius, pos.y - radius, diameter, diameter)
-
-  }
-
-  override def update(newPos: Vector2, speed: Float, targetPosition: Vector2, velocity: Vector2, lives: Int): SpaceShip = {
-    SpaceShip(newPos, speed, targetPosition, velocity, lives)
-  }
-
-  def maintainWithinScreen(): SpaceShip = { //Can be done with pattern matching, more scalastic.
-    if (pos.x >= x) this.update(Vector2(x - radius, pos.y), speed, this.targetPosition, this.velocity, this.lives)
-    if (pos.x <= 0) this.update(Vector2(x + radius, pos.y), speed, this.targetPosition, this.velocity, this.lives)
-    if (pos.y >= y) this.update(Vector2(pos.x, y - radius), speed, this.targetPosition, this.velocity, this.lives)
-    if (pos.y <= 0) this.update(Vector2(pos.x, y + radius), speed, this.targetPosition, this.velocity, this.lives)
-    else this
-  }
-
-  def moveTo(targetPosition: Vector2, graphics: PApplet, imageManager: ImageManager): SpaceShip = {
-    /** It is nearly the same implementation as moveToTargetPosition() in MovingObject[T]  **/
-    lazy val newSpaceShip: SpaceShip = this.updatePosition(targetPosition)
-    if (this.withinScreen()) newSpaceShip.draw(graphics, imageManager)
-    newSpaceShip
-  }
-
-  def updatePosition(targetPosition: Vector2): SpaceShip = {
-    lazy val spaceShipVelocity = targetPosition - this.pos
-    lazy val newPos = this.pos + spaceShipVelocity * speed * deltaT
-    this.update(newPos, speed, targetPosition, velocity, this.lives)
-  }
-
-  def isAlive: Boolean = lives > 0
-
-  def collision(): SpaceShip = {
-    this.update(this.pos, this.speed, this.targetPosition, this.velocity, this.lives - 1)
-  }
-
-  def work(graphics: PApplet, imageManager: ImageManager): Unit = {
-    Game.spaceShip = Game.spaceShip.maintainWithinScreen() //It doesnot work.
-    Game.spaceShip.draw(graphics, imageManager)
+  def maintainWithinScreen(): Unit = {
+    if (pos.x >= x) Game.spaceShip = this.moveLeftBy(radius)
+    if (pos.x <= 0) Game.spaceShip = this.moveRightBy(radius)
+    if (pos.y >= y) Game.spaceShip = this.moveDownBy(radius)
+    if (pos.y <= 0) Game.spaceShip = this.moveUpBy(radius)
   }
 
 }

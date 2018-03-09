@@ -16,16 +16,12 @@ case class Asteroid(override val pos: Vector2, override val speed: Float,
 
   def delList(): Unit = asteroidsToBeDrawn = asteroidsToBeDrawn diff Vector(this)
 
-  override def update(newPos: Vector2, speed: Float, targetPosition: Vector2, velocity: Vector2, lives: Int): Asteroid = {
-    Asteroid(newPos, speed, targetPosition, velocity, lives)
-  }
+  override def update(newPos: Vector2, speed: Float, targetPosition: Vector2, velocity: Vector2, lives: Int): Asteroid =  Asteroid(newPos, speed, targetPosition, velocity, lives)
 
-  def draw(graphics: PApplet, imageManager: ImageManager): Unit = {
-    graphics.image(imageManager("img/asteroid.png"), pos.x - radius, pos.y - radius, diameter, diameter)
-  }
+  def draw(graphics: PApplet, imageManager: ImageManager): Unit = graphics.image(imageManager("img/asteroid.png"), pos.x - radius, pos.y - radius, diameter, diameter)
 
   override def explode(graphics: PApplet, imageManager: ImageManager): Unit = {
     graphics.image(imageManager("img/explosion.png"), pos.x - radius, pos.y - radius, explosionDiameter, explosionDiameter)
-    asteroidsToBeDrawn = asteroidsToBeDrawn diff Vector(this)
+    this.delList()
   }
 }

@@ -9,10 +9,10 @@ import src.starships.Views.Graphics
 class UI extends Graphics {
 
   override def keyPressed(): Unit = keyCode match {
-    case Game.LEFT => Game.spaceShip = Game.spaceShip.moveTo(Game.spaceShip.moveLeftBy(Game.keyDistance).pos, this, imageManager)
-    case Game.RIGHT => Game.spaceShip = Game.spaceShip.moveTo(Game.spaceShip.moveRightBy(Game.keyDistance).pos, this, imageManager)
-    case Game.UP => Game.spaceShip = Game.spaceShip.moveTo(Game.spaceShip.moveUpBy(Game.keyDistance).pos, this, imageManager)
-    case Game.DOWN => Game.spaceShip = Game.spaceShip.moveTo(Game.spaceShip.moveDownBy(Game.keyDistance).pos, this, imageManager)
+    case Game.LEFT => Game.spaceShip.moveTo(Game.spaceShip.moveLeftBy(Game.keyDistance).pos, this, imageManager)
+    case Game.RIGHT => Game.spaceShip.moveTo(Game.spaceShip.moveRightBy(Game.keyDistance).pos, this, imageManager)
+    case Game.UP => Game.spaceShip.moveTo(Game.spaceShip.moveUpBy(Game.keyDistance).pos, this, imageManager)
+    case Game.DOWN => Game.spaceShip.moveTo(Game.spaceShip.moveDownBy(Game.keyDistance).pos, this, imageManager)
     case _ =>
   }
 
@@ -20,7 +20,7 @@ class UI extends Graphics {
   override def mouseClicked(): Unit = {
     targetPos = targetPos :+ Vector2(mouseX, mouseY)
     BulletEngine.createNewBullet(Vector2(mouseX, mouseY))
-    AsteroidEngine.createAsteroids(1)
+    AsteroidEngine.createNewAsteroid()
   }
 
 }
