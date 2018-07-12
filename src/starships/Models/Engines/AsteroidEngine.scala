@@ -14,6 +14,8 @@ object AsteroidEngine {
   def createNewAsteroid(): Unit = {
     lazy val asteroidPos = randomAsteroidPos() //Create a random position for an Asteroid
     Asteroid(asteroidPos, Game.asteroidSpeed, spaceShip.pos, asteroidTargetPos(asteroidPos), 1) //Finally create the new Asteroid
+    //What if one was to define Asteroid as having a position passed curried, that way one would just create a base asteoroid
+    //and then assign a position to each instance of it?
   }
 
   def asteroidTargetPos(asteroidPos: Vector2): Vector2 = spaceShip.pos - asteroidPos
